@@ -1,0 +1,15 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+
+if (@ARGV lt 1) {
+	print "Debe indicar el directorio al Dockerfile\n";
+	exit 1;
+}
+
+my $id = `id`;
+$id =~ /.*uid=(\d+)\((\w+)\).*gid=(\d+)\((\w+)\).*/;
+
+my $tag = $ARGV[1] ? ":$ARGV[1]" : "";
+
+system("docker build --build-arg uid=$1 --build-arg user=$2 --build-arg gid=$3 --build-arg group=$4 -t ftesone/ionic$tag $ARGV[0]");
